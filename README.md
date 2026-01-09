@@ -32,7 +32,7 @@ Download ZPeaks.zip to your computer and execute the following commands:
 
 ## Configuration file:
 
-You have to build a configuration file structured as the sample file "Input_ZPeaks_example.in" provided in the package.
+You have to build a configuration file structured as the sample file "Input_ZPeaks_BrdU.in" provided in the package.
 
 ### Input:
 The configuration file must specify the files that contain the experimental data in WIG format (EXPER record in configuration file), the data used for control (CONTROL record in configuration file; if the control is absent the program will use averaged experimental reads as a control), the genome of the organism (GENOME record in configuration file) if the user requires to weight the control with its A+T content (option -at_norm), an optional BED format file containing the peaks that you want to compare with reference peaks used for comparison (PREDICTION record in configuration file) and profiles (PROF) of genomic or epigenomic data measured across the chromosomes in GR or WIG formats (PROF parameter in configuration file).
@@ -131,7 +131,7 @@ The program Zpeaks_U determines internally the smoothing parameters $DAMP$ and $
 
 Another crucial parameter is the range $R$ across which the program computes the local mean and standard deviation of the score. The program Zpeaks_U determines $R$ by maximizing the mean score of the bins that belong to peaks multiplied times the square root of the number of called peaks $N_p$, i.e.
 
-Discriminative_score= $\sqrt{N_p}\sum_k \mathrm{Score}(k)}/(N_p <m_p>$
+Discriminative_score= $\sqrt{N_p}\sum_k \mathrm{Score}(k)/(N_p <m_p>)$
 
 where $<m_p>$ is the mean number of bins in a peak. We call this quantity discriminative score since it quantifies the discriminative power for distinguishing peaks from non-peaks, whose score is zero. Since the standard deviation of the Z score is one and the called peaks are independent, the discriminative score estimates the standard error of the mean difference of the scores between peaks and non-peaks.
 
@@ -145,6 +145,7 @@ Finally, the program discretizes the mean local score $<\tilde{y}>(k, R, t)$ in 
 
 ### FORMAT of the configuration file:
 
+```sh
 #### Input and output
 NAME Zpeaks_U_BrdU_Norm_AT  ! Name of output file
 EXPER:
@@ -203,6 +204,7 @@ OUTL=3           ! Normalize smoothed score excluding outliers such that
                  ! (score-ave)/sd>OUTL (if OUTL<=0, no outlier is removed)
 LOCAL=1		! Compute standard deviation locally
 EXP_MIN= 1.5	 ! Min. reads per bp at peaks def: 2
+```
 
 ## Execution
 
@@ -217,12 +219,13 @@ Options:
 
 The Zscore output comprises several files:
 
+```sh
 <name>_score.wig                            Zscore in wig format
 <name>_ALL_<Parameters>.bed     Called peaks in bed format, where <Parameters>=WIN<optimized_window_size>_T<THR>
 Properties_<name>.dat                       Table in text format with the input genomic and epigenomic properties of every called peak, if these properties are provided
+```
 
 Optional output: 
 
 If a reference set of peaks is input as PREDICTION, the program outputs the list of peaks that overlap with the reference (<name>_OLD_<Parameters>.bed),
 that do not overlap with it (<name>_NEW_<Parameters>.bed) and the reference peaks that are not found in the current experiment (<name>_notfound_<Parameters>.bed)
-
