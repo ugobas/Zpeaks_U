@@ -35,16 +35,66 @@ Download ZPeaks.zip to your computer and execute the following commands:
 You have to build a configuration file structured as the sample file "Input_ZPeaks_example.in" provided in the package.
 
 ### Input:
-The configuration file must specify the files that contain the experimental data in WIG format (EXPER parameter in configuration file), the data used for control (CONTROL parameter in configuration file; if the control is absent the program will use averaged experimental reads as a control), an optional BED format file containing the peaks that you want to compare with reference peaks used for comparison (PREDICTION parameter in configuration file) and profiles (PROF) of genomic or epigenomic data measured across the chromosomes in GR or WIG formats (PROF parameter in configuration file).
+The configuration file must specify the files that contain the experimental data in WIG format (EXPER record in configuration file), the data used for control (CONTROL record in configuration file; if the control is absent the program will use averaged experimental reads as a control), the genome of the organism (GENOME record in configuration file) if the user requires to weight the control with its A+T content (option -at_norm), an optional BED format file containing the peaks that you want to compare with reference peaks used for comparison (PREDICTION record in configuration file) and profiles (PROF) of genomic or epigenomic data measured across the chromosomes in GR or WIG formats (PROF parameter in configuration file).
 All types of data can be contained in a single file or in a list of files, one for each chromosome. Both individual and groups of files must be terminated with the record END at the beginning of a line.
 
 GR format:      https://stackoverflow.com/questions/28880086/what-is-gr-file-format
+
 BED format:     https://genome.ucsc.edu/FAQ/FAQformat.html#format1
+
 WIG format:     https://genome.ucsc.edu/FAQ/FAQformat.html#format6
 
-### Example of input:
+### Example of input
 
-The name of the output file may be specified (NAME parameter in configuration file).
+```sh
+EXPER:
+### BrdU:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+BrdU_exp_3mismatch_uniq_nosibs_chr1.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr2.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr3.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr4.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr5.gr
+END
+CONTROL:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+# Not normalized:
+BrdU_contr_3mismatch_uniq_nosibs_chr1.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr2.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr3.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr4.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr5.gr
+# AT normalized:
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr1.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr2.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr3.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr4.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr5.gr
+END
+GENOME:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+#DIR=/ngs/evo/Replication_Oris/TAIR9_TRANSLATED/FASTA_SEQUENCES/
+TAIR10_chr1.fas
+TAIR10_chr2.fas
+TAIR10_chr3.fas
+TAIR10_chr4.fas
+TAIR10_chr5.fas
+END
+NORM_AT=1 ! Normalize control by T count
+PREDICTION:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+Zpeaks_4d_10d_J200_S200.bed
+#Zpeaks_BrdU_Norm_AT_T2_W1500_J0.bed
+END
+PROF CDC6
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr1.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr2.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr3.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr4.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr5.gr
+END
+```
 
 ## Detailed description of the algorithm
 
