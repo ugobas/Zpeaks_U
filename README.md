@@ -123,7 +123,7 @@ To avoid being too permissive, the standard deviation $\sigma_k$ associated to t
 For improving the detection of peaks in difficult cases, the threshold $T(W)$ decreases with the peak width $W$ from the value $T_\mathrm{max}$ to $T_\mathrm{min}$, i.e. the program is more tolerant for wider peaks: $T(W)=\mathrm{max}(T_\mathrm{max}-(W-2)T_\mathrm{step},T_\mathrm{min})$
 We include into the candidate ORI all the bins that surround the peak k that fulfil  $Z_\mathrm{local}(i)=(\tilde{y}(i)-<\tilde{y}>(k,R,t))/\sigma_k > T(W)$.
 
-7) The sum of the local Z score over all bins in the peak constitutes the score of the peak Score$(k)$.
+7) The sum of the local Z score over all bins in the peak constitutes the score of the peak Score $(k)$.
 
 ### Parameter determination
 
@@ -131,7 +131,7 @@ The program Zpeaks_U determines internally the smoothing parameters $DAMP$ and $
 
 Another crucial parameter is the range $R$ across which the program computes the local mean and standard deviation of the score. The program Zpeaks_U determines $R$ by maximizing the mean score of the bins that belong to peaks multiplied times the square root of the number of called peaks $N_p$, i.e.
 
-Discriminative_score=$\sqrt{N_p}\sum_k \mathrm{Score}(k)}/(N_p <m_p>$
+Discriminative_score= $\sqrt{N_p}\sum_k \mathrm{Score}(k)}/(N_p <m_p>$
 
 where $<m_p>$ is the mean number of bins in a peak. We call this quantity discriminative score since it quantifies the discriminative power for distinguishing peaks from non-peaks, whose score is zero. Since the standard deviation of the Z score is one and the called peaks are independent, the discriminative score estimates the standard error of the mean difference of the scores between peaks and non-peaks.
 
@@ -180,10 +180,10 @@ DIR=<path/to/prof_2>
 <prof_2_file_n> (OPTIONAL)
 END
 ....
-#### Parameters
+#### Output parameters
 PRINT_SCORE=1    ! Print Peakscore as wig file
 PRINT_CLASS=1    ! Print bed file for each class?
-#### Parameters
+#### Execution parameters
 NORM_AT=1        ! Weight the control with AT content
 WP_MIN=2 	 ! Min.tested value of w2 def: 4
 THR=2.0          ! Max. threshold on score
