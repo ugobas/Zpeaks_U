@@ -185,25 +185,27 @@ END
 PRINT_SCORE=1    ! Print Peakscore as wig file
 PRINT_CLASS=1    ! Print bed file for each class?
 #### Execution parameters
+#### Preprocessing of the score
 NORM_AT=1        ! Weight the control with AT content
-WP_MIN=2 	 ! Min.tested value of w2 def: 4
-THR=2.0          ! Max. threshold on score
-THR_STEP=0.0	! Decrease of threshold per unit of WP
-THR_MIN=1.5	! Minimum value of Thr for WP>=WP_MIN
-SCORE_RANGE=s  ! Score to optimize range: S (score) N (n.peaks) D (S/sqrt(N)) s (S/N)
-RANGE_MIN=20	 ! Minimum range for local average of score
-RANGE_MAX=100          ! Range for local average of score
-N_RANGE=20       ! Trials for optimizing RANGE
-Y_MAX=0.0 	! Omit bin if y>y_min+Y_MAX*(y_max-y_min)
-LMIN_e=3         ! Min length for excluding putative peak
-LMIN_p=3         ! Min length for accepting putative peak
-SCORE=1          ! Optimize window to maximize number of selected bins (SCORE=0)
 SEPARATE_NORM=1  ! Normalize experiment and control separately for each chr
 SEP_SMOOTH=1     ! Smooth (exper-control) separately for each chr?
 OUTL=3           ! Normalize smoothed score excluding outliers such that
-                 ! (score-ave)/sd>OUTL (if OUTL<=0, no outlier is removed)
-LOCAL=1		! Compute standard deviation locally
+#                ! (score-ave)/sd>OUTL (if OUTL<=0, no outlier is removed)
+#### Peak calling
+WP_MIN=2 	 ! Min.tested value of w2 def: 4
+THR=2.0          ! Max. threshold on score
+THR_STEP=0.0	 ! Decrease of threshold per unit of WP
+THR_MIN=1.5	 ! Minimum value of Thr for WP>=WP_MIN
+SCORE=1          ! Optimize window to maximize score (1) or number of selected bins (0)
+Y_MAX=0.0 	 ! Omit bin if y>y_min+Y_MAX*(y_max-y_min)
 EXP_MIN= 1.5	 ! Min. reads per bp at peaks def: 2
+#### Range (mean and stand.dev. outside the peak)
+SCORE_RANGE=s  ! Score to optimize range: S (score) N (n.peaks) D (S/sqrt(N)) s (S/N)
+LOCAL=1		 ! Compute standard deviation locally
+RANGE_MIN=20	 ! Minimum range for local average of score
+RANGE_MAX=100    ! Range for local average of score
+N_RANGE=20       ! Trials for optimizing RANGE
+
 ```
 
 ## Execution
@@ -220,12 +222,13 @@ Options:
 The Zscore output comprises several files:
 
 ```sh
-<name>_score.wig                            Zscore in wig format
-<name>_ALL_<Parameters>.bed     Called peaks in bed format, where <Parameters>=WIN<optimized_window_size>_T<THR>
-Properties_<name>.dat                       Table in text format with the input genomic and epigenomic properties of every called peak, if these properties are provided
+<name>_score.wig                 Zscore in wig format
+<name>_ALL_<Parameters>.bed      Called peaks in bed format, where <Parameters>=WIN<optimized_window_size>_T<THR>
+Properties_<name>.dat            Table in text format with the input genomic and epigenomic properties of every called peak, if these properties are provided
 ```
 
 Optional output: 
 
 If a reference set of peaks is input as PREDICTION, the program outputs the list of peaks that overlap with the reference (<name>_OLD_<Parameters>.bed),
 that do not overlap with it (<name>_NEW_<Parameters>.bed) and the reference peaks that are not found in the current experiment (<name>_notfound_<Parameters>.bed)
+
