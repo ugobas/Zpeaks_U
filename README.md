@@ -60,20 +60,20 @@ ZPeaks_U works with the following steps, which can be modified by the user:
 
 1) Under demand (option -at_norm from command line or NORM_AT=1 in configuration file), ZPeaks_U weights the control such that the control score of each bin is proportional to the number of Thymine nucleotides that it contains, in order to take into account that sequences with more Ts are more likely to be selected in the experiment. This is done by reading the genome sequence, determining the maximum number of Thymidine bases of the leading and lagging strand of each bin, and multiplying the number of reads in the control times this number.
 
-2) ZPeaks_U normalizes experiment and control separately, either chromosome by chromosome (SEPARATE_NORM=1) or for the whole genome, so that their mean value across each chromosome equals 1, and it computes their difference $y_i=(experiment-control)_i$ at each bin $i$.
+2) ZPeaks_U normalizes experiment and control separately, either chromosome by chromosome (SEPARATE_NORM=1) or for the whole genome, so that their mean value across each chromosome equals 1, and it computes their difference $y(i)=(\mathrm{experiment}(i)-\mathrm{control}(i)$ at each bin $i$.
 
-3) ZPeaks_U smooths the difference signal $y_i$ over windows of $2l+1$ genomic bins, with weight 1 for the central bin, reduced by a factor exp(-B/DAMP) at each neighboring bin, until a threshold weight epsilon is reached. Here B is the bin size and the smoothing window size is calculated as WIN=EPS*DAMP/B. The parameters DAMP and EPS are internally optimized as explained below. The smoothed score is transformed into a Z-score, using the total standard deviation excluding outliers that deviate more than OUTL total standard deviations from the mean. If OUTL<0, outliers are not removed. The smoothing is performed either over all the genome or chromosome by chromosome (SEP_SMOOTH=1). The Z score of the smoothed difference score is called the Zpeaks score and indicated below as $\tilde{y}$ .
+3) ZPeaks_U smooths the difference signal $y(i)$ over windows of $2l+1$ genomic bins, with weight 1 for the central bin, reduced by a factor $\exp(-\mathrm{B/DAMP})$ at each neighboring bin, until a threshold weight EPS is reached. Here $B$ is the bin size and the smoothing window size is calculated as WIN=EPS*DAMP/B. The parameters DAMP and EPS are internally optimized as explained below. The smoothed score is transformed into a Z-score, using the total standard deviation excluding outliers that deviate more than OUTL total standard deviations from the mean. If OUTL<0, outliers are not removed. The smoothing is performed either over all the genome or chromosome by chromosome (SEP_SMOOTH=1). The Z score of the smoothed difference score is called the Zpeaks score and indicated below as $\tilde{y}(i)$ .
 
-4) Subsequently, ZPeaks_U identifies the local maxima $k$ of the Zpeaks score such that $\tilde{y}_i$ monotonically decreases for $i>k$ and for $i<k$ for at least two bins (i.e., it has a bell shape over at least five bins). The size at which the decrease is monotonic in both directions defines the width of the peak, $W$.
+4) Subsequently, ZPeaks_U identifies the local maxima $k$ of the Zpeaks score such that $\tilde{y}(i)$ monotonically decreases for $i>k$ and for $i<k$ for at least two bins (i.e., it has a bell shape over at least five bins). The size at which the decrease is monotonic in both directions defines the width of the peak, $W$.
 
-5) Then ZPeaks_U computes the local mean and standard deviation of the Zpeaks score across a genomic region of range $R$ around the peak $k$, excluding bins with scores $\tilde{y}_i$ similar to those within the candidate peak, since these bins can correspond to neighboring ORIs, i.e. it discards bins whose value is larger than the threshold $t \tilde{y}_max(k) +(1-t)\tilde{y}_min(k)$, where $t\in [0,1]$ is a parameter that combines the minimum and maximum value of $\tilde{y}_i$ at the candidate peak.
+5) Then ZPeaks_U computes the local mean and standard deviation of the Zpeaks score across a genomic region of range $R$ around the peak $k$, excluding bins with scores $\tilde{y}(i)$ similar to those within the candidate peak, since these bins can correspond to neighboring ORIs, i.e. it discards bins whose value is larger than the threshold $t \tilde{y}_\mathrm{max}(k) +(1-t)\tilde{y}_\mathrm{min}(k)$, where $t\in [0,1]$ is a parameter that combines the minimum and maximum value of $\tilde{y}(i)$ at the candidate peak.
 To avoid being too permissive, the standard deviation $\sigma_k$ associated to the peak $k$ is not smaller than the standard deviation across the whole genome.
 
 6) Finally, ZPeaks_U computes the local Z score around the peak $k$ using the local mean and standard deviation of the Zpeaks score and it calls the peak if the local Z score is larger than a threshold.
-For improving the detection of peaks in difficult cases, the threshold $T(W)$ decreases with the peak width $W$ from the value T_max to T_min, i.e. the program is more tolerant for wider peaks: $T(W)=max(T_max-T_step(W-2),T_min)$
-We include into the candidate ORI all the bins that surround the peak k that fulfil  $Z_local_i=(\tilde{y}_i-\mean{\tilde{y}}(k,R,t))/\sigma_k > T(W)$.
+For improving the detection of peaks in difficult cases, the threshold $T(W)$ decreases with the peak width $W$ from the value $T_\mathrm{max}$ to $T_\mathrm{min}$, i.e. the program is more tolerant for wider peaks: $T(W)=\mathrm{max}(T_\mathrm{max}-(W-2)T_\mathrm{step},T_\mathrm{min})$
+We include into the candidate ORI all the bins that surround the peak k that fulfil  $Z_\mathrm{local}(i)=(\tilde{y}(i)-<\tilde{y}>(k,R,t))/\sigma_k > T(W)$.
 
-7) The sum of the local Z score over all bins in the peak constitutes the score of the peak Score_k.
+7) The sum of the local Z score over all bins in the peak constitutes the score of the peak Score$(k)$.
 
 ### Parameter determination
 
@@ -81,7 +81,7 @@ The program Zpeaks_U determines internally the smoothing parameters $DAMP$ and $
 
 Another crucial parameter is the range $R$ across which the program computes the local mean and standard deviation of the score. The program Zpeaks_U determines $R$ by maximizing the mean score of the bins that belong to peaks multiplied times the square root of the number of called peaks $N_p$, i.e.
 
-Discriminative_score=\sqrt{N_p}\sum_k Score_k}/(N_p <m_p>
+Discriminative_score=$\sqrt{N_p}\sum_k \mathrm{Score}(k)}/(N_p <m_p>$
 
 where $<m_p>$ is the mean number of bins in a peak. We call this quantity discriminative score since it quantifies the discriminative power for distinguishing peaks from non-peaks, whose score is zero. Since the standard deviation of the Z score is one and the called peaks are independent, the discriminative score estimates the standard error of the mean difference of the scores between peaks and non-peaks.
 
@@ -91,7 +91,7 @@ We use as default the thresholds T_max=2.0, T_min=1.5, T_step=0.5. These paramet
 
 ### BrdU (EdU) classes
 
-Finally, the program discretizes the mean local score $\mean{\tilde{y}}(k, R, t)$ in five discrete values and associates each peak to one of the five classes. We expect that these classes represent different replication times, in the order -1,0,1,2,-2 from earlier to later replication time.
+Finally, the program discretizes the mean local score $<\tilde{y}>(k, R, t)$ in five discrete values and associates each peak to one of the five classes. We expect that these classes represent different replication times, in the order -1,0,1,2,-2 from earlier to later replication time.
 
 ### FORMAT of the configuration file:
 
