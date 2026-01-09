@@ -1,0 +1,109 @@
+# Output
+NAME Zpeaks_U_BrdU_Norm_AT
+PRINT_SCORE=1    ! Print Peakscore as wig file
+PRINT_CLASS=1    ! Print bed file for each class?
+# Parameters
+NORM_AT=1        ! Weight the control with AT content
+# Threshold on score
+WP_MIN=2 	 ! Min.tested value of w2 def: 4
+THR=1.5          ! Max. threshold on score
+THR_STEP=0.0	! Decrease of threshold per unit of WP
+THR_MIN=1.5	! Minimum value of Thr for WP>=WP_MIN+3
+# Range
+SCORE_RANGE=s  ! Score to optimize range: S (score) N (n.peaks) D (S/sqrt(N)) s (S/N)
+RANGE_MIN=20	 ! Minimum range for local average of score
+RANGE_MAX=100          ! Range for local average of score
+N_RANGE=20       ! Trials for optimizing RANGE
+# Other thresholds
+Y_MAX=0.0 	! Omit bin if y>y_min+Y_MAX*(y_max-y_min)
+LMIN_e=3         ! Min length for excluding putative peak
+LMIN_p=3         ! Min length for accepting putative peak
+SCORE=1          ! Optimize window to maximize number of selected bins (SCORE=0)
+#                ! or sum of scores of selected bins (SCORE=1)
+SEPARATE_NORM=1  ! Normalize experiment and control separately for each chr
+SEP_SMOOTH=1     ! Smooth (exper-control) separately for each chr?
+OUTL=3           ! Normalize smoothed score excluding outliers such that
+#                ! (score-ave)/sd>OUTL (if OUTL<=0, no outlier is removed)
+LOCAL=1		! Compute standard deviation locally
+ZTNUM=0          ! Rescale the threshold by number of regions
+EXP_MIN= 1.5	 ! Min. reads per bp at peaks def: 2
+DAMP_MIN=25      ! Min. value of damping factor
+DAMP_STEP=20     ! Increment of damping factor
+EPS=0.2          ! Threshold for smoothing
+# Input
+#
+EXPER:
+### BrdU:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+BrdU_exp_3mismatch_uniq_nosibs_chr1.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr2.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr3.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr4.gr
+BrdU_exp_3mismatch_uniq_nosibs_chr5.gr
+END
+CONTROL:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+# Not normalized:
+BrdU_contr_3mismatch_uniq_nosibs_chr1.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr2.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr3.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr4.gr
+BrdU_contr_3mismatch_uniq_nosibs_chr5.gr
+# AT normalized:
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr1.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr2.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr3.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr4.gr
+#BrdU_contr_ATnorm_3mismatch_uniq_nosibs_chr5.gr
+END
+GENOME:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+#DIR=/ngs/evo/Replication_Oris/TAIR9_TRANSLATED/FASTA_SEQUENCES/
+TAIR10_chr1.fas
+TAIR10_chr2.fas
+TAIR10_chr3.fas
+TAIR10_chr4.fas
+TAIR10_chr5.fas
+END
+NORM_AT=1 ! Normalize control by T count
+PREDICTION:
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+Zpeaks_4d_10d_J200_S200.bed
+#Zpeaks_BrdU_Norm_AT_T2_W1500_J0.bed
+END
+PROF CDC6
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr1.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr2.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr3.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr4.gr
+CDC6_34_vs_mpTiling_COL_123_original_CEL_Unique_PM_hmm_chr5.gr
+END
+PROF_GGN4_L0
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+GGN_clusters_Athaliana_TAIR10_Lmax_0_GGNmin_4.bed
+END
+PROF GC
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+TAIR10_chr1.fas_GC.dat
+TAIR10_chr2.fas_GC.dat
+TAIR10_chr3.fas_GC.dat
+TAIR10_chr4.fas_GC.dat
+TAIR10_chr5.fas_GC.dat
+END
+PROF GC_skew
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+TAIR10_chr1.fas_GC_skew.dat
+TAIR10_chr2.fas_GC_skew.dat
+TAIR10_chr3.fas_GC_skew.dat
+TAIR10_chr4.fas_GC_skew.dat
+TAIR10_chr5.fas_GC_skew.dat
+END
+PROF H3_EJ
+DIR=/home/ubastolla/RESEARCH/COLLABORATIONS/ARABIDOPSIS/ZPEAKS_U/INPUT/
+Chr1_H3_MCM_WG_Col-WT_seedlings.gr
+Chr2_H3_MCM_WG_Col-WT_seedlings.gr
+Chr3_H3_MCM_WG_Col-WT_seedlings.gr
+Chr4_H3_MCM_WG_Col-WT_seedlings.gr
+Chr5_H3_MCM_WG_Col-WT_seedlings.gr
+END
