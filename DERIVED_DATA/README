@@ -1,1 +1,14 @@
+The files contrained in this folder are bed files with the genomic coordinates of the Arabidopsis thaliana
+genome replication origins (ORIs) detected with the program Zpeaks_U applied to the data of Costas et al. (2011)
+and Wheeler et al. (2020).
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_All.bed: All 12072 ORIs from Costas et al. experiment
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_c-1.bed : Very early replicating ORIs from the same experiment
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_c0.bed  : Early replicating ORIs
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_c1.bed  : Mid replicating ORIs
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_c2.bed  : Late replicating ORIs 
+Zpeaks_U_BrdU_Norm_AT_T1.5_W300_c-2.bed : Very late replicating ORIs 
+
+Zpeaks_U_early_rep_C_ATnorm_T1.5_W625_All.bed
+
+Zpeaks_U_Veryearly_rep_C_ATnorm_T1.5_W125_All.bed
 
